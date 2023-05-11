@@ -54,7 +54,6 @@ ssh -i "$KEY_PEM" -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubunt
     sudo apt-get update > /dev/null
     echo "Installing nodejs, npm, git..."
     sudo apt-get install -y nodejs git > /dev/null
-    echo "Cloning maynir/parking-lot.git..."
     git clone https://github.com/guyganot/cloud_based_system_for_parking_lot.git
     cd parking-lot
     echo "Runing npm install..."
