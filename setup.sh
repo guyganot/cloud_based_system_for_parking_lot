@@ -42,7 +42,7 @@ AMI_ID=$(aws ec2 describe-images \
 echo "Creating EC2 instance"
 RUN_INSTANCES=$(aws ec2 run-instances \
     --image-id $AMI_ID \
-    --instance-type t2.micro \
+    --instance-type t3.micro \
     --key-name $KEY_NAME \
     --security-group-ids $SEC_GRP \
     --user-data file://startup.sh)
