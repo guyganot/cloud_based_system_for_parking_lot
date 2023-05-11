@@ -23,26 +23,19 @@ MY_IP=$(curl ipinfo.io/ip)
 
 # Add inbound rules for SSH and HTTP traffic
 echo "Setting up SSH rule allowing access only from $MY_IP"
-aws ec2 authorize-security-group-ingress \
-    --group-name $SEC_GRP --protocol tcp --port 22 \
-    --cidr $MY_IP/32
+aws ec2 authorize-security-group-ingress --group-name $SEC_GRP --protocol tcp --port 22 --cidr $MY_IP/32
 
 echo "Setting up HTTP rule allowing access from any IP"
-aws ec2 authorize-security-group-ingress \
-    --group-name $SEC_GRP --protocol tcp --port 5000 \
-    --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-name $SEC_GRP --protocol tcp --port 5000 --cidr 0.0.0.0/0
 
 # Get the ID of the latest Amazon Linux 2 AMI
-AMI_ID=$(aws ec2 describe-images \
-    --filters "Name=name,Values=amzn2-ami-hvm-2.0.????????.?-x86_64-gp2" \
-    --query "reverse(sort_by(Images, &CreationDate))[0].ImageId" \
-    --output text)
+AMI_ID='ami-00aa9d3df94c6c354'
 
 # Launch a new EC2 instance with the created key pair and security group
 echo "Creating EC2 instance"
 RUN_INSTANCES=$(aws ec2 run-instances \
     --image-id $AMI_ID \
-    --instance-type t3.micro \
+    --instance-type t2.micro \
     --key-name $KEY_NAME \
     --security-group-ids $SEC_GRP \
     --user-data file://startup.sh)
