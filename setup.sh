@@ -1,66 +1,67 @@
-#!/bin/bash
+# debug
+# set -o xtrace
 
-# Generate a new key pair for EC2 instance access
-KEY_NAME="parking-lot-`date +'%N'`"
+KEY_NAME="cloud-course-$(date +'%s')"
 KEY_PEM="$KEY_NAME.pem"
 
-echo "Creating key pair $KEY_NAME to connect to instances and save locally"
-aws ec2 create-key-pair --key-name $KEY_NAME \
-    | jq -r ".KeyMaterial" > $KEY_PEM
+echo "Create key pair $KEY_PEM to connect to instances and save locally"
+sudo aws ec2 create-key-pair --key-name "$KEY_NAME" | jq -r ".KeyMaterial" > "$KEY_PEM"
 
-# Secure the key pair
-chmod 400 $KEY_PEM
+# secure the key pair
+chmod 400 "$KEY_PEM"
 
-# Create a new security group for the instance with inbound rules for SSH and HTTP traffic
-SEC_GRP="parking-lot-sg-`date +'%N'`"
-echo "Setting up security group $SEC_GRP"
-aws ec2 create-security-group \
-    --group-name $SEC_GRP \
-    --description "Access parking lot instances"
+SEC_GRP="parking-lot-sg-$(date +'%s')"
 
-# Get the user's public IP address to restrict SSH access to the instance
+echo "Setup firewall $SEC_GRP"
+aws ec2 create-security-group --group-name "$SEC_GRP" --description "Access my instances" > /dev/null
+
+
+# figure out my ip
 MY_IP=$(curl ipinfo.io/ip)
+echo "My IP: $MY_IP"
 
-# Add inbound rules for SSH and HTTP traffic
-echo "Setting up SSH rule allowing access only from $MY_IP"
-aws ec2 authorize-security-group-ingress --group-name $SEC_GRP --protocol tcp --port 22 --cidr $MY_IP/32
 
-echo "Setting up HTTP rule allowing access from any IP"
-aws ec2 authorize-security-group-ingress --group-name $SEC_GRP --protocol tcp --port 5000 --cidr 0.0.0.0/0
+echo "Setup rule allowing SSH access to $MY_IP only"
+aws ec2 authorize-security-group-ingress --group-name "$SEC_GRP" --port 22 --protocol tcp --cidr "$MY_IP"/32 > /dev/null
 
-# Get the ID of the latest Amazon Linux 2 AMI
-AMI_ID='ami-00aa9d3df94c6c354'
+echo "Setup rule allowing HTTP (port 5000) access to $MY_IP only"
+aws ec2 authorize-security-group-ingress --group-name "$SEC_GRP" --port 5000 --protocol tcp --cidr "$MY_IP"/32 > /dev/null
 
-# Launch a new EC2 instance with the created key pair and security group
-echo "Creating EC2 instance"
-RUN_INSTANCES=$(aws ec2 run-instances \
-    --image-id $AMI_ID \
-    --instance-type t2.micro \
-    --key-name $KEY_NAME \
-    --security-group-ids $SEC_GRP \
-    --user-data file://startup.sh)
+UBUNTU_20_04_AMI="ami-00aa9d3df94c6c354"
 
-INSTANCE_ID=$(echo $RUN_INSTANCES | jq -r '.Instances[0].InstanceId')
+echo "Creating Ubuntu 20.04 instance..."
+RUN_INSTANCES=$(aws ec2 run-instances   \
+    --image-id $UBUNTU_20_04_AMI        \
+    --instance-type t2.micro            \
+    --key-name "$KEY_NAME"                \
+    --security-groups "$SEC_GRP")
+
+INSTANCE_ID=$(echo "$RUN_INSTANCES" | jq -r '.Instances[0].InstanceId')
 
 echo "Waiting for instance creation..."
-aws ec2 wait instance-running --instance-ids $INSTANCE_ID
+aws ec2 wait instance-running --instance-ids "$INSTANCE_ID"
 
-PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID | jq -r '.Reservations[0].Instances[0].PublicIpAddress')
+PUBLIC_IP=$(aws ec2 describe-instances  --instance-ids "$INSTANCE_ID" |
+    jq -r '.Reservations[0].Instances[0].PublicIpAddress'
+)
 
 echo "New instance $INSTANCE_ID @ $PUBLIC_IP"
 
-# Deploy the Flask application to the instance and start it using systemd
-echo "Deploying application to instance"
-scp -i $KEY_PEM -o "StrictHostKeyChecking=no" app.py ubuntu@$PUBLIC_IP:/home/ubuntu/
-scp -i $KEY_PEM -o "StrictHostKeyChecking=no" systemd/parking-lot.service ubuntu@$PUBLIC_IP:/home/ubuntu/
-
-echo "Setting up application environment on instance"
-ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" ubuntu@$PUBLIC_IP << EOF
-    sudo apt update
-    sudo apt install -y python3-pip
-    sudo pip3 install flask
-    sudo mv /home/ubuntu/parking-lot.service /etc/systemd/system/
-    sudo systemctl daemon-reload
-    sudo systemctl enable parking-lot.service
-    sudo systemctl start parking-lot.service
+echo "Execute script on machine"
+ssh -i "$KEY_PEM" -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@"$PUBLIC_IP" /bin/bash << EOF
+    echo "Updating apt-get..."
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - > /dev/null
+    sudo apt-get update > /dev/null
+    echo "Installing nodejs, npm, git..."
+    sudo apt-get install -y nodejs git > /dev/null
+    echo "Cloning maynir/parking-lot.git..."
+    git clone https://github.com/guyganot/cloud_based_system_for_parking_lot.git
+    cd parking-lot
+    echo "Runing npm install..."
+    sudo npm install > /dev/null
+    echo "Starting server..."
+    nohup node index.js &>/dev/null &
+    echo "Server up and running!"
+    exit
+    exit
 EOF
