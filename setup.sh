@@ -29,7 +29,7 @@ aws ec2 authorize-security-group-ingress \
 
 echo "Setting up HTTP rule allowing access from any IP"
 aws ec2 authorize-security-group-ingress \
-    --group-name $SEC_GRP --protocol tcp --port 80 \
+    --group-name $SEC_GRP --protocol tcp --port 5000 \
     --cidr 0.0.0.0/0
 
 # Get the ID of the latest Amazon Linux 2 AMI
