@@ -24,7 +24,7 @@ echo "Setup rule allowing SSH access to $MY_IP only"
 aws ec2 authorize-security-group-ingress --group-name "$SEC_GRP" --port 22 --protocol tcp --cidr "$MY_IP"/32
 
 echo "Setup rule allowing HTTP (port 5000) access to $MY_IP only"
-aws ec2 authorize-security-group-ingress --group-name "$SEC_GRP" --port 5000 --protocol tcp --cidr "$MY_IP"/32
+aws ec2 authorize-security-group-ingress --group-name "$SEC_GRP" --port 5000 --protocol tcp --cidr "$MY_IP/32"
 
 UBUNTU_20_04_AMI="ami-00aa9d3df94c6c354"
 
