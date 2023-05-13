@@ -1,6 +1,7 @@
 KEY_NAME="cloud-course-`date +'%N'`"
 KEY_PEM="$KEY_NAME.pem"
 
+echo "test"
 echo "create key pair $KEY_PEM to connect to instances and save locally"
 aws ec2 create-key-pair --key-name $KEY_NAME \
     | jq -r ".KeyMaterial" > $KEY_PEM
