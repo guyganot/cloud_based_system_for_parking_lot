@@ -62,3 +62,14 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@
     nohup flask run --host 0.0.0.0  &>/dev/null &
     exit
 EOF
+
+echo
+echo "This is the IP of the Current instance: $PUBLIC_IP"
+echo
+echo "Example for insert a car: curl -X POST http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+echo
+curl -X POST "http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+echo
+echo "Example for exit that car curl -X POST http://$PUBLIC_IP:5000/exit?ticketId=0"
+echo
+curl -X POST "http://$PUBLIC_IP:5000/exit?ticketId=0"
