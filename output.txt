@@ -1,50 +1,50 @@
-create key pair cloud-course-258453046.pem to connect to instances and save locally
-\setup firewall my-sg-086968978
+create key pair cloud-course-743207700.pem to connect to instances and save locally
+setup firewall my-sg-493963400
 {
-    "GroupId": "sg-035cd4fe5a9ce4d76"
+    "GroupId": "sg-04f8bf1d275693e10"
 }
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    12  100    12    0     0    100      0 --:--:-- --:--:-- --:--:--   100
-My IP: 46.137.59.20
-Setup rule allowing SSH access to 46.137.59.20 only
+100    13  100    13    0     0     61      0 --:--:-- --:--:-- --:--:--    61
+My IP: 89.139.171.64
+Setup rule allowing SSH access to 89.139.171.64 only
 {
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-0535cebd55e7d942d",
-            "GroupId": "sg-035cd4fe5a9ce4d76",
+            "SecurityGroupRuleId": "sgr-0e118bd1fbb6680b8",
+            "GroupId": "sg-04f8bf1d275693e10",
             "GroupOwnerId": "104075520559",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 22,
             "ToPort": 22,
-            "CidrIpv4": "46.137.59.20/32"
+            "CidrIpv4": "89.139.171.64/32"
         }
     ]
 }
-Setup rule allowing HTTP (port 5000) access to 46.137.59.20 only
+Setup rule allowing HTTP (port 5000) access to all IPs
 {
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-0ead6b40b8bfcb75c",
-            "GroupId": "sg-035cd4fe5a9ce4d76",
+            "SecurityGroupRuleId": "sgr-0eb63d2413b5b9874",
+            "GroupId": "sg-04f8bf1d275693e10",
             "GroupOwnerId": "104075520559",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 5000,
             "ToPort": 5000,
-            "CidrIpv4": "46.137.59.20/32"
+            "CidrIpv4": "0.0.0.0/0"
         }
     ]
 }
 Creating Ubuntu 20.04 instance...
 Waiting for instance creation...
-New instance i-09118c39a9f5e3597 @ 3.250.163.212
+New instance i-075a72043b1fed717 @ 54.171.250.129
 deploying code to production
-Warning: Permanently added '3.250.163.212' (ED25519) to the list of known hosts.
-main.py                                                                                                                                                                          100% 3052     1.0MB/s   00:00    
+Warning: Permanently added '54.171.250.129' (ED25519) to the list of known hosts.
+main.py                                                                                                                                   100% 3143    29.3KB/s   00:00
 setup production environment
 Pseudo-terminal will not be allocated because stdin is not a terminal.
 Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.0-1031-aws x86_64)
@@ -53,12 +53,7 @@ Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.0-1031-aws x86_64)
  * Management:     https://landscape.canonical.com
  * Support:        https://ubuntu.com/advantage
 
-  System information as of Sat May 13 14:44:49 UTC 2023
-
-  System load:  0.7763671875      Processes:             121
-  Usage of /:   20.1% of 7.57GB   Users logged in:       0
-  Memory usage: 19%               IPv4 address for eth0: 172.31.19.42
-  Swap usage:   0%
+ System information disabled due to load higher than 1.0
 
 
 Expanded Security Maintenance for Applications is not enabled.
@@ -80,18 +75,18 @@ Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]
 Get:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [108 kB]
 Get:5 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [363 kB]
-Get:6 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [108 kB]
-Get:7 http://security.ubuntu.com/ubuntu jammy-security/main amd64 c-n-f Metadata [9732 B]
-Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [225 kB]
-Get:9 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [33.3 kB]
-Get:10 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 c-n-f Metadata [604 B]
-Get:11 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [709 kB]
-Get:12 http://security.ubuntu.com/ubuntu jammy-security/universe Translation-en [122 kB]
-Get:13 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 c-n-f Metadata [14.3 kB]
-Get:14 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [30.2 kB]
-Get:15 http://security.ubuntu.com/ubuntu jammy-security/multiverse Translation-en [5828 B]
-Get:16 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 c-n-f Metadata [252 B]
-Get:17 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [14.1 MB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [14.1 MB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [108 kB]
+Get:8 http://security.ubuntu.com/ubuntu jammy-security/main amd64 c-n-f Metadata [9732 B]
+Get:9 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [225 kB]
+Get:10 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [33.3 kB]
+Get:11 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 c-n-f Metadata [604 B]
+Get:12 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [709 kB]
+Get:13 http://security.ubuntu.com/ubuntu jammy-security/universe Translation-en [122 kB]
+Get:14 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 c-n-f Metadata [14.3 kB]
+Get:15 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [30.2 kB]
+Get:16 http://security.ubuntu.com/ubuntu jammy-security/multiverse Translation-en [5828 B]
+Get:17 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 c-n-f Metadata [252 B]
 Get:18 http://archive.ubuntu.com/ubuntu jammy/universe Translation-en [5652 kB]
 Get:19 http://archive.ubuntu.com/ubuntu jammy/universe amd64 c-n-f Metadata [286 kB]
 Get:20 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [217 kB]
@@ -117,7 +112,7 @@ Get:39 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages 
 Get:40 http://archive.ubuntu.com/ubuntu jammy-backports/universe Translation-en [15.0 kB]
 Get:41 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 c-n-f Metadata [548 B]
 Get:42 http://archive.ubuntu.com/ubuntu jammy-backports/multiverse amd64 c-n-f Metadata [116 B]
-Fetched 24.6 MB in 9s (2753 kB/s)
+Fetched 24.6 MB in 9s (2833 kB/s)
 Reading package lists...
 Building dependency tree...
 Reading state information...
@@ -154,8 +149,8 @@ debconf: falling back to frontend: Readline
 debconf: unable to initialize frontend: Readline
 debconf: (This frontend requires a controlling tty.)
 debconf: falling back to frontend: Teletype
-dpkg-preconfigure: unable to re-open stdin: 
-Fetched 683 kB in 0s (20.5 MB/s)
+dpkg-preconfigure: unable to re-open stdin:
+Fetched 683 kB in 0s (16.8 MB/s)
 Selecting previously unselected package javascript-common.
 (Reading database ... 63657 files and directories currently installed.)
 Preparing to unpack .../0-javascript-common_11+nmu1_all.deb ...
@@ -195,24 +190,17 @@ No containers need to be restarted.
 No user sessions are running outdated binaries.
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  libjq1 libonig5
-The following NEW packages will be installed:
-  jq libjq1 libonig5
-0 upgraded, 3 newly installed, 0 to remove and 45 not upgraded.
-Need to get 357 kB of archives.
-After this operation, 1087 kB of additional disk space will be used.
-Do you want to continue? [Y/n] Abort.
 
-This is the IP of the Current instance: 3.250.163.212
+This is the IP of the Current instance: 54.171.250.129
 
-Example for car entry: curl -X POST http://3.250.163.212:5000/entry?plate=123-456-789&parkingLot=1
+Example for car entry: curl -X POST http://54.171.250.129:5000/entry?plate=123-456-789&parkingLot=1
 
-{"ticket_id":0}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    71  100    71    0     0     96      0 --:--:-- --:--:-- --:--:--    96{"error": "Invalid request. Please provide both plate and parkingLot."}
 
-Example for car exit: curl -X POST http://3.250.163.212:5000/exit?ticketId=
+Example for car exit: curl -X POST http://54.171.250.129:5000/exit?ticketId=0
 
-{"charge":0.0,"parked_time":0.0250087,"parking_lot":"1","plate":"123-456-789"}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    54  100    54    0     0    332      0 --:--:-- --:--:-- --:--:--   335{"error": "Invalid request. Please provide ticketId."}
