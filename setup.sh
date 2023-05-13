@@ -63,10 +63,10 @@ EOF
 echo
 echo "This is the IP of the Current instance: $PUBLIC_IP"
 echo
-echo "Example for car entry: curl -X POST http://$PUBLIC_IP:5000/entry?plate=123-456-789&parkingLot=1"
+echo "Example for car entry: curl -X POST http://$PUBLIC_IP:5000/entry?plate=1234567&parkingLot=12"
 echo
-ticket_id=$(curl --ipv4 -X POST "http://$PUBLIC_IP:5000/entry?plate=123-456-789&parkingLot=1" | jq -r '.ticketId')
+curl -X POST "http://$PUBLIC_IP:5000/entry?plate=1234567&parkingLot=12"
 echo
-echo "Example for car exit: curl -X POST http://$PUBLIC_IP:5000/exit?ticketId=$ticket_id"
+echo "Example for car exit: curl -X POST http://$PUBLIC_IP:5000/exit?ticketId=0"
 echo
-curl --ipv4 -X POST "http://$PUBLIC_IP:5000/exit?ticketId=$ticket_id"
+curl -X POST "http://$PUBLIC_IP:5000/exit?ticketId=0"
