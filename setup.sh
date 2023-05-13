@@ -7,6 +7,7 @@ aws ec2 create-key-pair --key-name $KEY_NAME \
 
 # secure the key pair
 chmod 400 $KEY_PEM
+ssh -i KEY_NAME.pem ubuntu@3.252.82.80
 
 SEC_GRP="my-sg-`date +'%N'`"
 
@@ -45,8 +46,6 @@ PUBLIC_IP=$(aws ec2 describe-instances  --instance-ids $INSTANCE_ID |
 )
 
 echo "New instance $INSTANCE_ID @ $PUBLIC_IP"
-
-ssh -i KEY_NAME.pem ubuntu@PUBLIC_IP
 
 echo "deploying code to production"
 scp -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=60" main.py ubuntu@$PUBLIC_IP:/home/ubuntu/
