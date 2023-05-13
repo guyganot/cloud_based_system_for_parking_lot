@@ -60,7 +60,7 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@
     sudo apt  install podman-docker  # version 3.4.4+ds1-1ubuntu1
     export FLASK_APP="main.py"
     # run app
-    nohup flask run --host 0.0.0.0  &>/dev/null &
+    nohup flask run --host 0.0.0.0 --port 5000 &
     exit
 EOF
 
