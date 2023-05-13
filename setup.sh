@@ -7,7 +7,6 @@ aws ec2 create-key-pair --key-name $KEY_NAME \
 
 # secure the key pair
 chmod 400 $KEY_PEM
-ssh -i KEY_NAME.pem ubuntu@3.252.82.80
 
 SEC_GRP="my-sg-`date +'%N'`"
 
