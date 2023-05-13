@@ -56,8 +56,7 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@
     sudo apt install python3-flask -y
     export FLASK_APP="main.py"
     # run app
-    nohup flask run --host 0.0.0.0 --port 5000 &
-    nohup flask run --host 0.0.0.0  &>/dev/null &
+    nohup flask run --host 0.0.0.0 &>/dev/null &
     exit
 EOF
 
