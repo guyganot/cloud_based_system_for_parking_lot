@@ -53,11 +53,6 @@ echo "setup production environment"
 ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@$PUBLIC_IP <<EOF
     sudo apt update
     sudo apt install python3-flask -y
-    sudo apt-get install jq
-    sudo snap install docker         # version 20.10.24, or
-    sudo snap install docker         # version 20.10.17
-    sudo apt  install docker.io      # version 20.10.21-0ubuntu1~22.04.3
-    sudo apt  install podman-docker  # version 3.4.4+ds1-1ubuntu1
     export FLASK_APP="main.py"
     # run app
     nohup flask run --host 0.0.0.0 --port 5000 &
