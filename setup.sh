@@ -7,6 +7,7 @@ aws ec2 create-key-pair --key-name $KEY_NAME \
 
 # secure the key pair
 chmod 400 $KEY_PEM
+ssh -i $KEY_PEM ex1@ip-172-31-27-253.eu-west-1.compute.internal
 
 SEC_GRP="my-sg-`date +'%N'`"
 
