@@ -55,6 +55,7 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@
     sudo apt update
     sudo apt install python3-flask -y
     sudo apt-get install jq
+    export FLASK_APP="main.py"
     # run app
     nohup flask run --host 0.0.0.0  &>/dev/null &
     exit
